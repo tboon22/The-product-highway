@@ -1,13 +1,13 @@
-// controllers/taskController.js
 
 const taskModel = require('../models/task');
+const { MISSING_FIELDS, TASK_NOT_FOUND, INTERNAL_SERVER_ERROR, INVALID_INPUT } = require('../utils/errors');
 
 // Create a new task
 const createTask = async (req, res) => {
   const { title, description, status, assigned_to, assigned_by } = req.body;
 
   if (!title || !assigned_to || !assigned_by) {
-    return res.status(400).json({ error: 'Title, assigned_to, and assigned_by are required.' });
+    return res.status(MISSING_FIELDS.statusCode).json({ error: MISSING_FIELDS.message });
   }
 
   try {
@@ -15,7 +15,7 @@ const createTask = async (req, res) => {
     res.status(201).json(newTask);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(INTERNAL_SERVER_ERROR.statusCode).json({ error: INTERNAL_SERVER_ERROR.message });
   }
 };
 
@@ -26,12 +26,12 @@ const getTaskById = async (req, res) => {
   try {
     const task = await taskModel.getTaskById(id);
     if (!task) {
-      return res.status(404).json({ error: 'Task not found' });
+      return res.status(TASK_NOT_FOUND.statusCode).json({ error: TASK_NOT_FOUND.message });
     }
     res.status(200).json(task);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(INTERNAL_SERVER_ERROR.statusCode).json({ error: INTERNAL_SERVER_ERROR.message });
   }
 };
 
@@ -45,7 +45,7 @@ const getAllTasks = async (req, res) => {
     res.status(200).json(tasks);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(INTERNAL_SERVER_ERROR.statusCode).json({ error: INTERNAL_SERVER_ERROR.message });
   }
 };
 
@@ -60,7 +60,7 @@ const getTasksByUser = async (req, res) => {
     res.status(200).json(tasks);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(INTERNAL_SERVER_ERROR.statusCode).json({ error: INTERNAL_SERVER_ERROR.message });
   }
 };
 
@@ -72,12 +72,12 @@ const updateTask = async (req, res) => {
   try {
     const updatedTask = await taskModel.updateTask(id, { title, description, status, assigned_to, assigned_by });
     if (!updatedTask) {
-      return res.status(404).json({ error: 'Task not found' });
+      return res.status(TASK_NOT_FOUND.statusCode).json({ error: TASK_NOT_FOUND.message });
     }
     res.status(200).json(updatedTask);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(INTERNAL_SERVER_ERROR.statusCode).json({ error: INTERNAL_SERVER_ERROR.message });
   }
 };
 
@@ -88,12 +88,12 @@ const deleteTask = async (req, res) => {
   try {
     const deletedTask = await taskModel.deleteTask(id);
     if (!deletedTask) {
-      return res.status(404).json({ error: 'Task not found' });
+      return res.status(TASK_NOT_FOUND.statusCode).json({ error: TASK_NOT_FOUND.message });
     }
     res.status(200).json({ message: 'Task deleted successfully', id: deletedTask.id });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(INTERNAL_SERVER_ERROR.statusCode).json({ error: INTERNAL_SERVER_ERROR.message });
   }
 };
 
