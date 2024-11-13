@@ -1,4 +1,4 @@
-// server.js
+
 const express = require('express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
@@ -7,7 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Swagger setup
+
 const swaggerOptions = {
   swaggerDefinition: {
     info: {
@@ -26,17 +26,20 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
-// Middleware
+
 app.use(express.json());
 
-// Routes
+
 app.use('/tasks', taskRoutes);
 app.use('/users', userRoutes);
 
-// Swagger UI
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+module.exports = app; 

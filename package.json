@@ -8,7 +8,7 @@
     "clear-db": "node config/clearDb.js",
     "seed": "node config/seeder.js",
     "dev": "nodemon server.js",
-    "test": "npm test"
+    "test": "jest"
   },
   "author": "Tushar Bansal",
   "license": "ISC",
